@@ -12,11 +12,13 @@ public class GameLogic : MonoBehaviour
     public bool isOn = false;
     private bool isNotEnded;
     public float negativeOffset = 1;
+    public GameObject btnResults;
 
     // Start is called before the first frame update
     void Start()
     {
         ResetScene();
+        btnResults.SetActive(!true);
     }
 
     // Update is called once per frame
@@ -46,7 +48,7 @@ public class GameLogic : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.R))
             {
-                //cambia a la escena Results
+                GameManager.Instance.ChangeScene("Results");
             }
         }
         
@@ -70,7 +72,8 @@ public class GameLogic : MonoBehaviour
     }
 
     void ResetScene()
-    {        
+    {
+        btnResults.SetActive(!true);
         isOn = false;
         isNotEnded = true;
         time = startTime;
@@ -81,6 +84,14 @@ public class GameLogic : MonoBehaviour
 
     void GameEnded()
     {
+        btnResults.SetActive(!false);
+
         txtStartDirections.text = "Press P to play again or R.";
+        GameManager.Instance.score = time;
+        
+        if (GameManager.Instance.highscore > GameManager.Instance.score && GameManager.Instance.score >= 0)
+        {
+            GameManager.Instance.highscore = time;
+        }
     }
 }
